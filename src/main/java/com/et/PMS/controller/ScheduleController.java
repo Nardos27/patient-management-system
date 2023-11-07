@@ -15,13 +15,34 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/")
 public class ScheduleController {
     @Autowired
     private final ScheduleService scheduleService;
     private static final String JSON = MediaType.APPLICATION_JSON_VALUE;
-    @PostMapping(value = "schedule/register",consumes = JSON,produces = JSON)
+    @PostMapping(value = "schedule/register")
     public ResponseDTO<?> addSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto ){
         return scheduleService.addSchedule(scheduleRequestDto);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -37,19 +37,29 @@ public class PatientService {
     public ResponseDTO<?> getPatients() {
         List<PatientScheduleResponseDto> patientScheduleResponseDtoList = new ArrayList<>();
         List<Patient> patientList = patientRepository.findAll();
+
         patientList.forEach(patient -> {
             Schedule schedule = scheduleRepository.findAllByPatientId(patient.getId());
+
             PatientScheduleResponseDto patientScheduleResponseDto = new PatientScheduleResponseDto();
             patientScheduleResponseDto.setId(patient.getId());
             patientScheduleResponseDto.setAge(patient.getAge());
             patientScheduleResponseDto.setGender(patient.getGender());
             patientScheduleResponseDto.setPhoneNumber(patient.getPhoneNumber());
             patientScheduleResponseDto.setFullName(patient.getFullName());
-            patientScheduleResponseDto.setScheduleId(schedule.getId());
-            patientScheduleResponseDto.setScheduleCreatedDate(schedule.getCreatedDate());
-            patientScheduleResponseDto.setFullName(patient.getFullName());
+
+            if (schedule != null) {
+                patientScheduleResponseDto.setScheduleId(schedule.getId());
+                patientScheduleResponseDto.setScheduleCreatedDate(schedule.getCreatedDate());
+            } else {
+                // Handle the case where the patient does not have a schedule
+                patientScheduleResponseDto.setScheduleId(null);
+                patientScheduleResponseDto.setScheduleCreatedDate(null);
+            }
+
             patientScheduleResponseDtoList.add(patientScheduleResponseDto);
         });
+
         return apiMessages.successMessageWithListData(patientScheduleResponseDtoList);
     }
 }
